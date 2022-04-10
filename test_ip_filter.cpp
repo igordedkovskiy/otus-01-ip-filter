@@ -11,7 +11,7 @@
 
 TEST(TEST_FILTER, test_ip_filter)
 {
-    ASSERT_TRUE(true);
+    ASSERT_TRUE(false);
 }
 
 int main(int argc, char** argv)
