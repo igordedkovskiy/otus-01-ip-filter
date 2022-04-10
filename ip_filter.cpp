@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <type_traits>
+#include <algorithm>
 #include "ip_filter.h"
 
 namespace ip_filter
@@ -43,5 +44,27 @@ void sort(addr_collection_t& col)
 //    col.sort(comp);
     sort(col, comp);
 }
+
+//std::pair<addr_collection_t::iterator, addr_collection_t::iterator>
+//find_if(addr_collection_t &ip_list, std::size_t elem_num, unsigned char val)
+//{
+//    auto first = std::find_if(std::begin(ip_list), std::end(ip_list),
+//                              [elem_num,val](const address_t& el){ return el[elem_num] == val; });
+//    auto last = std::find_if(first, std::end(ip_list),
+//                             [elem_num,val](const address_t& el){ return el[elem_num] < val; });
+//    return {first,last};
+//}
+
+//std::pair<addr_collection_t::iterator, addr_collection_t::iterator>
+//find_if(addr_collection_t& ip_list, std::size_t elem1_num, unsigned char val1, std::size_t elem2_num, unsigned char val2)
+//{
+//    auto first = std::find_if(std::begin(ip_list), std::end(ip_list),
+//                              [elem1_num,val1,elem2_num,val2](const address_t& el)
+//                              { return el[elem1_num] == val1 && el[elem2_num] == val2; });
+//    auto last = std::find_if(first, std::end(ip_list),
+//                             [elem1_num,val1,elem2_num,val2](const address_t& el)
+//                            { return el[elem1_num] < val1 || el[elem2_num] != val2; });
+//    return {first,last};
+//}
 
 }

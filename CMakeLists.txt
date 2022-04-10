@@ -5,6 +5,8 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project(ip_filter VERSION ${PROJECT_VESRION})
 
+include(CTest)
+
 option(WITH_GTEST "Whether to build google test" ON)
 
 configure_file(version.h.in version.h)
@@ -85,10 +87,11 @@ set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(CPACK_PACKAGE_VERSION_MINOR "${PROJECT_VERSION_MINOR}")
 set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
-set(CPACK_PACKAGE_CONTACT example@example.com)
+set(CPACK_PACKAGE_CONTACT divmy@yandex.ru)
 include(CPack)
 
 if(WITH_GTEST)
     enable_testing()
     add_test(test test_ip_filter)
 endif()
+
