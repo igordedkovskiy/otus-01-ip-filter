@@ -39,9 +39,9 @@ void sort(addr_collection_t& col)
     {
         return !std::lexicographical_compare(std::begin(l),std::end(l),std::begin(r),std::end(r));
     };
-//    std::sort(std::begin(col), std::end(col), comp);
-//    col.sort(comp);
-    sort(col, comp);
+    std::sort(std::begin(col), std::end(col), comp);
+////    col.sort(comp);
+//    sort(col, comp);
 }
 
 }
