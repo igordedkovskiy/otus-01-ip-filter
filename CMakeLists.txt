@@ -17,6 +17,11 @@ set_target_properties(ip_filter PROPERTIES
     CXX_STANDARD_REQUIRED ON
 )
 
+set_target_properties(ip_filter_lib PROPERTIES
+    CXX_STANDARD 17
+    CXX_STANDARD_REQUIRED ON
+)
+
 target_include_directories(ip_filter_lib
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
