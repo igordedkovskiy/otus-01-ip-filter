@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 3.2)
 
-set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
+set(PATCH_VERSION "2" CACHE INTERNAL "Patch version")
 set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project(ip_filter VERSION ${PROJECT_VESRION})
 
-#option(WITH_BOOST_TEST "Whether to build Boost test" ON)
 option(WITH_GTEST "Whether to build google test" ON)
 
 configure_file(version.h.in version.h)
@@ -86,6 +85,5 @@ include(CPack)
 
 if(WITH_GTEST)
     enable_testing()
-    #add_test(test_ip_filter test_ip_filter)
-        add_test(test test_ip_filter)
+    add_test(test test_ip_filter)
 endif()
