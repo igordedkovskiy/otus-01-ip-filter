@@ -2,9 +2,9 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include "filter.h"
+#include "ip_filter.h"
 
-using namespace filter;
+using namespace ip_filter;
 
 int main()
 {
@@ -22,11 +22,6 @@ int main()
 
     sort(ip_list);
 
-//    auto print = [](const address_t& el)
-//    {
-//        std::cout << (int)std::get<0>(it) << '.' << (int)std::get<1>(it) << '.'
-//                  << (int)std::get<2>(it) << '.' << (int)std::get<3>(it) << '\n';
-//    }
     auto print = [](const address_t& el)
     {
         std::cout << (int)el[0] << '.' << (int)el[1] << '.'

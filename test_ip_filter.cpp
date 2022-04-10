@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
-#include "filter.h"
+#include "ip_filter.h"
 
-TEST(TEST_VERSION, test_valid_version)
+TEST(TEST_FILTER, test_ip_filter)
 {
     ASSERT_TRUE(true);
 }
