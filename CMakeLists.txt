@@ -5,8 +5,6 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project(ip_filter VERSION ${PROJECT_VESRION})
 
-include(CTest)
-
 option(WITH_GTEST "Whether to build google test" ON)
 
 configure_file(version.h.in version.h)
@@ -91,7 +89,14 @@ set(CPACK_PACKAGE_CONTACT divmy@yandex.ru)
 include(CPack)
 
 if(WITH_GTEST)
+    include(CTest)
     enable_testing()
     add_test(test test_ip_filter)
 endif()
 
+if(UNIX)
+    include(CTest)
+    #message(STATUS ">>> Linux or BSD or MacOS")
+    enable_testing()
+    add_test(NAME "check_md5sum" COMMAND "${SOURCE_DIR}/check_md5.sh")
+endif()
