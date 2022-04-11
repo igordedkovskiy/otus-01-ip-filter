@@ -15,9 +15,9 @@ jobs:
           submodules: true
       - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_GTEST=ON
       - run: cmake --build .
+      - run: cat ./ip_filter.tsv | ./ip_filter | md5sum
       - run: chmod +rx ./check_md5sum.sh
       - run: cmake --build . --target test
-      - run: cat ./ip_filter.tsv | ./ip_filter | md5sum
       - run: cmake --build . --target package
       - name: Create Release
         id: create_release
