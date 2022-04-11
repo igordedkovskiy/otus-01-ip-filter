@@ -3,9 +3,9 @@
 
 answer=$(cat ./ip_filter.tsv | ./ip_filter | md5sum)
 answer=${answer:0:32}
-echo $answer
+#echo $answer
 md5="24e7a7b2270daee89c64d3ca5fb3da1a"
 
 if [ "$answer" -ne "$md5" ]
-    exit -1
-exit 1
+    exit 1
+exit 0
