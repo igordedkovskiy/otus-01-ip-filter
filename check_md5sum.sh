@@ -1,3 +1,6 @@
+#!/bin/sh
+#!/bin/bash
+
 answer=$(cat ./ip_filter.tsv | ./ip_filter | md5sum)
 md5="24e7a7b2270daee89c64d3ca5fb3da1a"
 
