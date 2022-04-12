@@ -13,12 +13,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - run: cmake . -DPATCH_VERSION=${{ github.run_number }} -DWITH_GTEST=ON
-      - run: cmake --build .
+      - run: cmake . -B ./Release_b -DPATCH_VERSION=${{ github.run_number }} -DWITH_GTEST=ON
+      - run: cmake --build ./Release_b
       - run: chmod +rx ./check_md5sum.sh
-      - run: cmake --build . --target test
+      - run: cmake --build ./Release_b --target test
       - run: cat ./ip_filter.tsv | ./ip_filter | md5sum
-      - run: cmake --build . --target package
+      - run: cmake --build ./Release_b --target package
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
