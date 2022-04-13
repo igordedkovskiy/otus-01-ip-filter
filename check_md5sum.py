@@ -24,44 +24,28 @@ def main():
     inputfile = "ip_filter.tsv"
     builddir = "Release"
     
+    if curdir == Path(sys.path[0]).resolve():
+        filename = "./" + builddir + "/" + filename
+        executable = "./" + builddir + "/" + executable
+        inputfile = "./" + inputfile
+    else:
+        filename = "./" + filename
+        executable = "./" + executable
+        inputfile = "../" + inputfile
+    
     if sys.platform == "win32":
-    #    if curdir == Path(sys.path[0]).resolve():
-    #        filename = "./" + builddir + "/" + filename + ".exe"
-    #        executable = "./" + builddir + "/" + executable
-    #        inputfile = "./" + inputfile
-    #    else:
-    #        filename = "./" + filename
-    #        executable = "./" + executable
-    #        inputfile = "../" + inputfile
-    #    command_line = "%s < %s > %s" % (Path(executable).resolve(), Path(inputfile).resolve(), Path(filename).resolve())
-    #    md5 = "36b72c25de983078b68625b7610e7673" # win
-    #elif sys.platform == "linux":
-        if curdir == Path(sys.path[0]).resolve():
-            filename = "./" + builddir + "/" + filename
-            executable = "./" + builddir + "/" + executable + ".exe"
-            inputfile = "./" + inputfile
-        else:
-            filename = "./" + filename
-            executable = "./" + executable + ".exe"
-            inputfile = "../" + inputfile
-        print(filename)
-        print(executable)
-        print(inputfile)
-        print(Path(inputfile).resolve())
-        print(Path(executable).resolve())
-        print(Path(filename).resolve())
-        #command_line = "cat %s | %s > %s" % (Path(inputfile).resolve(), Path(executable).resolve(), Path(filename).resolve())
-        command_line = "cat %s | %s > %s" % (inputfile, executable, filename)
-        md5 = "24e7a7b2270daee89c64d3ca5fb3da1a" # nix
+        filename = "./" + builddir + "/" + filename + ".exe"
+        command_line = "%s < %s > %s" % (Path(executable).resolve(), Path(inputfile).resolve(), Path(filename).resolve())
         md5 = "36b72c25de983078b68625b7610e7673" # win
+    elif sys.platform == "linux":        
+        command_line = "cat %s | %s > %s" % (Path(inputfile).resolve(), Path(executable).resolve(), Path(filename).resolve())
+        md5 = "24e7a7b2270daee89c64d3ca5fb3da1a" # nix
     else:
         return -1
         
     result = subprocess.run(command_line, shell=True)
-    #answer = count(Path(filename).resolve())
-    answer = count(filename)
-    #os.remove(Path(filename).resolve())
-    print(answer.hexdigest())
+    answer = count(Path(filename).resolve())
+    os.remove(Path(filename).resolve())
     if md5 != answer.hexdigest():
         return -1
     return 0
