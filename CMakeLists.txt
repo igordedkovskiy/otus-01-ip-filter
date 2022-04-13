@@ -97,7 +97,7 @@ elseif(WIN32)
 endif()
 
 find_package(Python3 COMPONENTS Interpreter)
-add_test(NAME "check_md5sum_py" COMMAND Python3::Interpreter "${CMAKE_CURRENT_SOURCE_DIR}/md5.py")
+add_test(NAME "check_md5sum_py" COMMAND Python3::Interpreter "${CMAKE_CURRENT_SOURCE_DIR}/check_md5sum.py")
 
 if(WITH_GTEST)
     add_test(test test_ip_filter)
