@@ -10,7 +10,7 @@ echo $md5
 
 #if [ "$answer" -ne "$md5" ] # for integers
 if [ "$answer" != "$md5" ]; then # for strings
-	exit 1
+	exit 0
 fi
 
-exit 0
+exit 1
