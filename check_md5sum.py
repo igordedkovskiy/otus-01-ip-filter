@@ -34,7 +34,7 @@ def main():
         inputfile = "../" + inputfile
     
     if sys.platform == "win32":
-        filename = "./" + builddir + "/" + filename + ".exe"
+        executable = executable + ".exe"
         command_line = "%s < %s > %s" % (Path(executable).resolve(), Path(inputfile).resolve(), Path(filename).resolve())
         md5 = "36b72c25de983078b68625b7610e7673" # win
     elif sys.platform == "linux":        
