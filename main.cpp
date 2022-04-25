@@ -9,17 +9,20 @@
 int main()
 {
     ip_filter::addr_collection_t ip_list;
-    std::size_t in_size = 0;
-    std::cin >> in_size;
-    ip_list.reserve(in_size);
-    std::string read;
-    unsigned int cntr = 0;
-    while(std::cin >> read)
     {
-        if(cntr++ % 3 == 0)
+        std::size_t in_size = 0;
+        std::cin >> in_size;
+        ip_list.reserve(in_size);
+        std::string read;
+        std::size_t cntr = 0;
+        const std::size_t num_of_reads = 3 * in_size;
+        while(std::cin >> read && cntr < num_of_reads)
         {
-            ip_list.emplace_back(ip_filter::parse_address(read));
-            read.clear();
+            if(cntr++ % 3 == 0)
+            {
+                ip_list.emplace_back(ip_filter::parse_address(read));
+                read.clear();
+            }
         }
     }
 
