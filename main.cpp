@@ -9,6 +9,9 @@
 int main()
 {
     ip_filter::addr_collection_t ip_list;
+    std::size_t in_size = 0;
+    std::cin >> in_size;
+    ip_list.reserve(in_size);
     std::string read;
     unsigned int cntr = 0;
     while(std::cin >> read)
