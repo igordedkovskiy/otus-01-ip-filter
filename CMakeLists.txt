@@ -9,8 +9,8 @@ option(WITH_GTEST "Whether to build google test" ON)
 
 configure_file(version.h.in version.h)
 
-add_executable(ip_filter main.cpp)
-add_library(ip_filter_lib ip_filter.cpp ip_filter.h)
+add_executable(ip_filter "main.cpp")
+add_library(ip_filter_lib "ip_filter.cpp" "ip_filter.h" "read_input.cpp" "read_input.h")
 
 set_target_properties(ip_filter PROPERTIES
     CXX_STANDARD 17
@@ -100,5 +100,5 @@ find_package(Python3 COMPONENTS Interpreter)
 add_test(NAME "check_md5sum_py" COMMAND Python3::Interpreter "${CMAKE_CURRENT_SOURCE_DIR}/check_md5sum.py")
 
 if(WITH_GTEST)
-    add_test(test test_ip_filter)
+    add_test(gtest_logic test_ip_filter)
 endif()

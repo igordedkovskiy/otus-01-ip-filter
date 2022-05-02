@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <type_traits>
 #include <algorithm>
+#include <stdexcept>
 #include "ip_filter.h"
 
 namespace ip_filter
@@ -21,16 +22,33 @@ template<typename T, typename C> void sort(T& col, C comp)
 
 address_t parse_address(const std::string &addr)
 {
-    const auto first = addr.find_first_of('.');
-    const auto second = addr.find_first_of('.', first + 1);
-    const auto third = addr.find_first_of('.', second + 1);
+    if(addr.empty())
+        throw ParseErr::incorrect_format;
 
-    const address_t a{static_cast<unsigned char>(stoi(addr.substr(0, first))),
-                      static_cast<unsigned char>(stoi(addr.substr(first+1, second - first - 1))),
-                      static_cast<unsigned char>(stoi(addr.substr(second+1, third - second - 1))),
-                      static_cast<unsigned char>(stoi(addr.substr(third+1, addr.size() - third - 1)))
-                      };
-    return a;
+    const auto delim1 = addr.find_first_of('.');
+    if(delim1 == std::string::npos || delim1 < 1)
+        throw ParseErr::incorrect_format;
+
+    const auto delim2 = addr.find_first_of('.', delim1 + 1);
+    if(delim2 == std::string::npos || delim2 < delim1 + 2)
+        throw ParseErr::incorrect_format;
+
+    const auto delim3 = addr.find_first_of('.', delim2 + 1);
+    if(delim3 == std::string::npos || delim3 < delim2 + 2 || delim3 == addr.size() - 1)
+        throw ParseErr::incorrect_format;
+
+    try
+    {
+        const auto n1 = static_cast<unsigned char>(stoi(addr.substr(0, delim1)));
+        const auto n2 = static_cast<unsigned char>(stoi(addr.substr(delim1+1, delim2 - delim1 - 1)));
+        const auto n3 = static_cast<unsigned char>(stoi(addr.substr(delim2+1, delim3 - delim2 - 1)));
+        const auto n4 = static_cast<unsigned char>(stoi(addr.substr(delim3+1, addr.size() - delim3 - 1)));
+        return address_t{n1, n2, n3, n4};
+    }
+    catch(std::logic_error& e)
+    {
+        throw ParseErr::incorrect_format;
+    }
 }
 
 
@@ -40,31 +58,7 @@ void sort(addr_collection_t& col)
     {
         return !std::lexicographical_compare(std::begin(l),std::end(l),std::begin(r),std::end(r));
     };
-//    std::sort(std::begin(col), std::end(col), comp);
-//    col.sort(comp);
     sort(col, comp);
 }
-
-//std::pair<addr_collection_t::iterator, addr_collection_t::iterator>
-//find_if(addr_collection_t &ip_list, std::size_t elem_num, unsigned char val)
-//{
-//    auto first = std::find_if(std::begin(ip_list), std::end(ip_list),
-//                              [elem_num,val](const address_t& el){ return el[elem_num] == val; });
-//    auto last = std::find_if(first, std::end(ip_list),
-//                             [elem_num,val](const address_t& el){ return el[elem_num] < val; });
-//    return {first,last};
-//}
-
-//std::pair<addr_collection_t::iterator, addr_collection_t::iterator>
-//find_if(addr_collection_t& ip_list, std::size_t elem1_num, unsigned char val1, std::size_t elem2_num, unsigned char val2)
-//{
-//    auto first = std::find_if(std::begin(ip_list), std::end(ip_list),
-//                              [elem1_num,val1,elem2_num,val2](const address_t& el)
-//                              { return el[elem1_num] == val1 && el[elem2_num] == val2; });
-//    auto last = std::find_if(first, std::end(ip_list),
-//                             [elem1_num,val1,elem2_num,val2](const address_t& el)
-//                            { return el[elem1_num] < val1 || el[elem2_num] != val2; });
-//    return {first,last};
-//}
 
 }

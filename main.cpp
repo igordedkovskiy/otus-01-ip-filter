@@ -1,31 +1,14 @@
 #include <iostream>
-#include <vector>
 #include <string>
 #include <algorithm>
 #include "ip_filter.h"
-
-//using namespace ip_filter;
+#include "read_input.h"
 
 int main()
 {
-    ip_filter::addr_collection_t ip_list;
-    {
-        std::size_t in_size = 0;
-        std::cin >> in_size;
-        ip_list.reserve(in_size);
-        std::string read;
-        std::size_t cntr = 0;
-        const std::size_t num_of_reads = 3 * in_size;
-        while(std::cin >> read && cntr < num_of_reads)
-        {
-            if(cntr++ % 3 == 0)
-            {
-                ip_list.emplace_back(ip_filter::parse_address(read));
-                read.clear();
-            }
-        }
-    }
-
+    auto [ip_list, failed_line] = ip_filter::read_input(std::cin);
+    if(ip_list.empty())
+        return -1;
     ip_filter::sort(ip_list);
 
     auto print = [](const ip_filter::address_t& el)
@@ -42,8 +25,6 @@ int main()
                                   [](const ip_filter::address_t& el){ return el[0] == 1; });
         auto last = std::find_if(first, std::end(ip_list), [](const ip_filter::address_t& el){ return el[0] < 1; });
         std::for_each(first, last, print);
-//        auto it = ip_filter::find_if(ip_list, 0, 1);
-//        std::for_each(it.first, it.second, print);
     }
     {
         auto first = std::find_if(std::begin(ip_list), std::end(ip_list),
@@ -51,15 +32,13 @@ int main()
         auto last = std::find_if(first, std::end(ip_list),
                                  [](const ip_filter::address_t& el){ return el[0] < 46 || el[1] != 70; });
         std::for_each(first, last, print);
-//        auto it = ip_filter::find_if(ip_list, 0, 46, 1, 70);
-//        std::for_each(it.first, it.second, print);
     }
     {
         auto comp = [](const ip_filter::address_t& el)
         {
             for(auto it:el)
             {
-                if(it == 46 )
+                if(it == 46)
                     return true;
             }
             return false;

@@ -1,7 +1,8 @@
-#include "gtest/gtest.h"
-#include "ip_filter.h"
 #include <string>
 #include <sstream>
+#include "gtest/gtest.h"
+#include "ip_filter.h"
+#include "read_input.h"
 
 //#ifdef WIN32
 // //ip_filter.exe < .\ip_filter.tsv | md5sum
@@ -43,6 +44,84 @@ TEST(TEST_ADDR_SORT, test_addr_sort)
     sort(ip_list);
 
     ASSERT_TRUE(ip_list == ans);
+}
+
+TEST(TEST_ADDR, verify_input_format)
+{
+    {
+        std::istringstream input{"3\n"
+                                 "162.145.156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                };
+        auto [ip_list, failed_line] = ip_filter::read_input(input);
+        ASSERT_TRUE(failed_line == 1);
+        ASSERT_TRUE(ip_list.size() == 3);
+    }
+    {
+        std::istringstream input{"3\n"
+                                 "113.162.145.156 111 0\n"
+                                 "113.162.145156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                };
+        auto [ip_list, failed_line] = ip_filter::read_input(input);
+        ASSERT_TRUE(failed_line == 2);
+        ASSERT_TRUE(ip_list.size() == 3);
+    }
+    {
+        std::istringstream input{"3\n"
+                                 "113.162.145.156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                 "113.s.145.156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                };
+        auto [ip_list, failed_line] = ip_filter::read_input(input);
+        ASSERT_TRUE(failed_line == 3);
+        ASSERT_TRUE(ip_list.size() == 3);
+    }
+    {
+        std::istringstream input{"3\n"
+                                 "113.162.145.156\n"
+                                 "113.123.145.156 0\n"
+                                 "113.162.145.156 111 0\n"
+                                };
+        auto [ip_list, failed_line] = ip_filter::read_input(input);
+        ASSERT_TRUE(failed_line == std::numeric_limits<decltype(failed_line)>::max());
+        ASSERT_TRUE(ip_list.size() == 3);
+    }
+    {
+        std::istringstream input{"3\n"
+                                 "113.162.145.156\n"
+                                 "113.123.145.156 0\n"
+                                 "113.162.145.156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                 "113.162.145.156 111 0\n"
+                                };
+        auto [ip_list, failed_line] = ip_filter::read_input(input);
+        ASSERT_TRUE(failed_line == std::numeric_limits<decltype(failed_line)>::max());
+        ASSERT_TRUE(ip_list.size() == 3);
+    }
+    {
+        std::istringstream input{"0\n"};
+        auto [ip_list, failed_line] = ip_filter::read_input(input);
+        ASSERT_TRUE(failed_line == std::numeric_limits<decltype(failed_line)>::max());
+        ASSERT_TRUE(ip_list.size() == 0);
+    }
+    {
+        std::istringstream input{"-10\n"
+                                 "q\n"
+                                 "3\n"
+                                 "113.162.145.156\n"
+                                 "113.123.145.156 0\n"
+                                 "113.162.145.156 111 0\n"
+                                };
+        auto [ip_list, failed_line] = ip_filter::read_input(input);
+        ASSERT_TRUE(failed_line == std::numeric_limits<decltype(failed_line)>::max());
+        ASSERT_TRUE(ip_list.size() == 3);
+    }
 }
 
 int main(int argc, char** argv)
