@@ -4,7 +4,7 @@
 #include "ip_filter.h"
 #include "read_input.h"
 
-int main()
+int main( )
 {
     auto [ip_list, failed_line] = ip_filter::read_input(std::cin);
     if(ip_list.empty())
